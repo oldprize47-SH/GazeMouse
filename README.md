@@ -1,25 +1,41 @@
 # Gaze Tracking Mouse
 
-![Gaze Tracking Mouse overview](assets/portfolio-cover.png)
+**A webcam-based mouse interface built with a teammate: gaze estimation, calibration and real-time interaction in one application.**
 
-A two-person course project exploring webcam gaze estimation and mouse interaction without dedicated eye-tracking hardware.
+![Look. Hold. Blink.](assets/readme-overview.png)
 
-[Portfolio home](https://github.com/oldprize47-SH) · [Original repository](https://github.com/oldprize47/DLIP_FinalProject2025_GazeMouse)
+[What I built](#what-i-built) · [My role](#my-role) · [Code and reproduction](#code-and-reproduction) · [Portfolio](https://github.com/oldprize47-SH)
 
-[Original project README](README.original.md)
+## What I built
 
-## Contribution and context
+| Deliverable | What it does | Explore |
+|---|---|---|
+| **Live interaction** | Webcam processing and pointer behaviour | [Source / result](main.py) |
+| **Gaze model** | Neural gaze estimation | [Source / result](fginet.py) |
+| **Calibration helpers** | Preprocessing and coordinate mapping | [Source / result](gaze_utils.py) |
+
+### Result at a glance
+
+Historical team report: 22–24 FPS and 67.71 px test MAE. Image-level split may leak nearby frames; these are internal reference values.
+
+**[▶ Watch the original team demonstration](https://www.youtube.com/watch?v=VR9T6X-zanU)**
+
+The linked video is the team’s original demonstration, not a newly recorded test.
+
+## My role
 
 I contributed jointly across data collection, the model and the real-time interface. The original report credits Sangheon Park and Sunwoo Kim; this fork preserves both authors and the original history.
 
-## Code map
+## How it works
 
-| Entry | Purpose |
-|---|---|
-| [main.py](main.py) | Real-time gaze, pointer fixation and blink interaction |
-| [fginet.py](fginet.py) | Gaze model implementation |
-| [gaze_utils.py](gaze_utils.py) | Eye preprocessing and calibration helpers |
-| [environment.yml](environment.yml) | Recorded development environment |
+```mermaid
+flowchart LR
+    N0["Estimate gaze"] --> N1
+    N1["Calibrate the screen"] --> N2
+    N2["Move and click"]
+```
+
+## Code and reproduction
 
 ## Demonstration and recorded results
 
@@ -39,9 +55,10 @@ executing camera or pointer actions; it did not retrain or remeasure the model.
 The separate private curated snapshot remains private. This fork preserves the
 already-public course repository; it does not publish additional private data.
 
-## Archive policy
+## Source and credits
 
-The fork retains upstream history, source attributions and course material. The
-portfolio documentation does not assign a new licence or claim sole authorship
-of inherited code. Current checks are stated above; an untested component is not
-presented as verified.
+[Original repository](https://github.com/oldprize47/DLIP_FinalProject2025_GazeMouse) · [Portfolio home](https://github.com/oldprize47-SH)
+
+[Original README](README.original.md) is retained alongside the source history.
+
+Course scaffolding, team contributions and third-party assets retain their original attribution. This documentation does not grant a new licence.
