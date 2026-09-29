@@ -10,6 +10,8 @@
 
 ## 한국어
 
+[코드 읽는 순서](#코드-따라-읽기)
+
 [상세 사용법](#사용법-튜토리얼) · [원본 튜토리얼](README.original.md)
 
 
@@ -30,7 +32,7 @@
 
 
 
-![프로젝트 목표: gaze-mouse-course-project](docs/goals/gaze-concept-v3.png)
+![프로젝트 목표: gaze-mouse-course-project](docs/goals/goal.png)
 
 
 
@@ -106,6 +108,22 @@ MAE는 화면 좌표의 평균 절대 오차이며 단위는 픽셀입니다. FP
 
 
 
+### 코드 따라 읽기
+
+아래 순서는 파일의 역할과 연결을 이해하기 위한 안내입니다. 독립 과제나 보드별 프로그램은 한꺼번에 실행하지 않고 해당 항목의 실행 안내를 따릅니다.
+
+| 순서 | 파일 | 역할과 다음 단계 |
+|---|---|---|
+| 1 | [make_csv_custom.py](make_csv_custom.py) | 눈 이미지와 화면 좌표 라벨을 수집해 학습 입력을 만듭니다. |
+| 2 | [eye_patch_dataset.py](eye_patch_dataset.py) | 이미지와 라벨을 학습에 사용할 데이터셋으로 읽습니다. |
+| 3 | [fginet.py](fginet.py) | 시선 좌표를 예측하는 신경망 구조입니다. |
+| 4 | [train.py](train.py) | 데이터와 모델을 연결해 학습·평가와 체크포인트 저장을 진행합니다. |
+| 5 | [gaze_utils.py](gaze_utils.py) | 실시간 실행의 전처리와 보정 보조 기능을 확인합니다. |
+| 6 | [main.py](main.py) | 웹캠 입력부터 예측·보정·포인터·클릭으로 이어지는 실행 루프입니다. |
+| 7 | [keyboard.py](keyboard.py) | 팀원이 만든 화면 키보드 구성요소입니다. |
+
+[기존 상세 튜토리얼과 원문](README.original.md)도 함께 보존했습니다.
+
 ### 구현 살펴보기
 
 
@@ -163,6 +181,8 @@ MAE는 화면 좌표의 평균 절대 오차이며 단위는 픽셀입니다. FP
 
 ## English
 
+[Code walkthrough](#code-walkthrough)
+
 [Usage guide](#usage-tutorial) · [Original tutorial](README.original.md)
 
 
@@ -187,7 +207,7 @@ Use a normal webcam to move and click the mouse pointer with eye gaze, without d
 
 
 
-![Project goal: gaze-mouse-course-project](docs/goals/gaze-concept-v3.png)
+![Project goal: gaze-mouse-course-project](docs/goals/goal.png)
 
 
 
@@ -263,6 +283,22 @@ MAE is the mean absolute error in screen-coordinate pixels; FPS is the number of
 
 
 
+### Code walkthrough
+
+Use this order to understand each file and its connections. Independent exercises and board targets are not one executable; follow the relevant run instructions below.
+
+| Step | File | Role and next step |
+|---|---|---|
+| 1 | [make_csv_custom.py](make_csv_custom.py) | Collect eye images and screen-coordinate labels for training. |
+| 2 | [eye_patch_dataset.py](eye_patch_dataset.py) | Load images and labels as a training dataset. |
+| 3 | [fginet.py](fginet.py) | Inspect the network used to predict gaze coordinates. |
+| 4 | [train.py](train.py) | Connect data and model for training, evaluation and checkpoints. |
+| 5 | [gaze_utils.py](gaze_utils.py) | Inspect preprocessing and calibration helpers for live use. |
+| 6 | [main.py](main.py) | Follow the live loop from webcam input through prediction, calibration, pointer movement and clicks. |
+| 7 | [keyboard.py](keyboard.py) | This is the screen-keyboard component developed by the teammate. |
+
+The [original tutorial and documentation](README.original.md) remain available in full.
+
 ### Reading the implementation
 
 
@@ -309,4 +345,3 @@ The Python source was checked for syntax without opening the camera or controlli
 
 
 [Original repository](https://github.com/oldprize47/DLIP_FinalProject2025_GazeMouse). Original history and attribution are retained.
-
