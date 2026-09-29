@@ -10,6 +10,8 @@
 
 ## 한국어
 
+[상세 사용법](#사용법-튜토리얼) · [원본 튜토리얼](README.original.md)
+
 
 
 시선 추적 마우스는 2025년 영상처리 수업에서 개발한 웹캠 기반 포인터 인터페이스입니다. 사용자가 바라보는 위치를 추정하고, 추정값을 화면 좌표에 맞게 보정해 마우스 포인터를 움직입니다. 전용 시선 추적 장비 없이도 시선을 일정 시간 유지하거나 눈을 깜박이는 방식으로 클릭할 수 있습니다.
@@ -32,7 +34,7 @@
 
 
 
-시선 기반 상호작용을 설명하기 위해 AI로 생성한 개념 이미지입니다. 실제 프로젝트 사진이나 애플리케이션 화면 캡처가 아닙니다.
+<sub>AI 생성 개념도</sub>
 
 
 
@@ -52,7 +54,7 @@
 
 
 
-프로젝트 문서와 코드를 바탕으로 재구성한 개략도입니다. 아래 결과 설명을 함께 읽으면 확인된 내용과 검증의 한계를 살펴볼 수 있습니다. [SVG](docs/flowcharts/gaze.svg)
+<sub>구성도 · <a href="docs/flowcharts/gaze.svg">SVG</a></sub>
 
 
 
@@ -116,6 +118,27 @@ MAE는 화면 좌표의 평균 절대 오차이며 단위는 픽셀입니다. FP
 
 
 
+### 사용법 튜토리얼
+
+[기존 상세 튜토리얼 전체 보기](README.original.md) · [환경 설정과 단계별 코드 설명](README.original.md#3-tutorial-procedure)
+
+기존에 작성한 환경 설정, 데이터 수집, 학습, 실시간 실행, 보정과 키보드 사용 설명은 위 원문에 그대로 보존되어 있습니다. 아래는 실행 순서를 빠르게 찾기 위한 안내입니다.
+
+1. **환경 준비:** 전체 소스가 있는 [GazeMouse](https://github.com/oldprize47-SH/GazeMouse)를 내려받고 프로젝트 폴더에서 다음 명령을 실행합니다.
+
+   ```sh
+   conda env create -f environment.yml
+   conda activate Gaze_mouse_fgi
+   ```
+
+2. **눈 이미지 수집:** `make_csv_custom.py`에서 저장 폴더와 CSV 경로를 정한 뒤 실행합니다. 화면의 목표를 바라보며 `Space`로 이미지를 수집하고 `Esc`로 종료합니다. 목표별 수집량과 이어서 수집하는 방법은 원문 STEP 1을 참고하세요.
+3. **모델 학습:** `train.py`의 데이터와 저장 경로를 맞춘 뒤 학습합니다. 데이터 분할, 체크포인트와 평가 과정은 원문 STEP 2에 설명되어 있습니다. 학습 결과는 실시간 프로그램의 `CKPT` 설정과 일치해야 하며, 기본 파일명은 `model_weights.pth`입니다.
+4. **실시간 실행:** 호환되는 가중치를 준비한 뒤 `python main.py`를 실행합니다. 웹캠이 켜지고 실제 마우스 포인터를 제어하므로 종료 키 `Esc`를 먼저 확인해 주세요.
+5. **사용자 보정:** `c`로 보정을 시작하고 화면의 안내를 따릅니다. 저장된 `calib.npy`를 불러오려면 `Space`를 누릅니다. 사용자나 카메라 위치가 달라졌다면 다시 보정합니다.
+6. **포인터와 클릭:** 보정 후 시선에 따라 포인터가 이동합니다. 원문은 일정 시간 시선을 고정해 포인터를 잠근 뒤 두 눈을 깜박여 클릭하는 순서를 설명합니다. `m`은 창 배치를 바꾸며 `Esc`는 종료합니다. 세부 임계값과 화면 키보드 설명도 원문에 있습니다.
+
+가중치와 개인 보정 데이터는 별도로 준비해야 합니다. 위 안내는 원래 튜토리얼과 현재 소스의 설정·단축키를 대조한 것으로, 이번 문서 복원에서 웹캠 실행이나 모델 재학습을 수행하지는 않았습니다.
+
 ### 실행
 
 
@@ -139,6 +162,8 @@ MAE는 화면 좌표의 평균 절대 오차이며 단위는 픽셀입니다. FP
 <a id="english"></a>
 
 ## English
+
+[Usage guide](#usage-tutorial) · [Original tutorial](README.original.md)
 
 
 
@@ -166,7 +191,7 @@ Use a normal webcam to move and click the mouse pointer with eye gaze, without d
 
 
 
-AI-generated concept illustration of gaze-based interaction; not a photograph of the project or an application screenshot.
+<sub>AI-generated concept illustration</sub>
 
 
 
@@ -186,7 +211,7 @@ This could serve as a starting point for hands-free pointer interaction and acce
 
 
 
-Overview reconstructed from the documented project and code. The results below explain what was checked and where the verification limits remain. [SVG](docs/flowcharts/gaze.svg)
+<sub>System overview · <a href="docs/flowcharts/gaze.svg">SVG</a></sub>
 
 
 
@@ -249,6 +274,27 @@ If you are new to the implementation, [main.py](main.py) is a useful starting po
 You can explore the project without a webcam. To reproduce the live demo, first prepare a compatible environment and model checkpoint, then calibrate for the user and screen. The trained model and a valid calibration need separate preparation; opening the repository or installing the listed environment does not provide them.
 
 
+
+### Usage tutorial
+
+[Read the original detailed tutorial](README.original.md) · [Environment setup and step-by-step code walkthrough](README.original.md#3-tutorial-procedure)
+
+The original environment setup, data collection, training, live interaction, calibration and keyboard instructions remain available in full. This is a quick route through that workflow.
+
+1. **Prepare the environment:** download the complete [GazeMouse](https://github.com/oldprize47-SH/GazeMouse) source and run these commands from the project directory.
+
+   ```sh
+   conda env create -f environment.yml
+   conda activate Gaze_mouse_fgi
+   ```
+
+2. **Collect eye images:** configure the output folder and CSV path in `make_csv_custom.py`, then run it. Look at each displayed target, press `Space` to capture images and `Esc` to exit. Original STEP 1 explains capture counts and resuming collection.
+3. **Train the model:** set the data and output paths in `train.py`. Original STEP 2 covers splitting data, checkpoints and evaluation. The resulting weights must match the live application's `CKPT` setting, which defaults to `model_weights.pth`.
+4. **Run the interface:** once compatible weights are available, run `python main.py`. This opens the webcam and controls the actual mouse pointer; `Esc` exits.
+5. **Calibrate:** press `c` and follow the on-screen targets. Press `Space` to load the saved `calib.npy`. Recalibrate when the user or camera position changes.
+6. **Move and click:** after calibration, gaze moves the pointer. The original tutorial describes holding gaze to lock the pointer, then blinking both eyes to click. Press `m` to change window placement or `Esc` to exit. Threshold settings and the screen keyboard are described in the full tutorial.
+
+Model weights and personal calibration data need separate preparation. These instructions were checked against the original tutorial and current source settings and key bindings; no webcam run or retraining was performed during this documentation restoration.
 
 ### Running
 
