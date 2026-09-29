@@ -25,7 +25,7 @@
 
 ![시선으로 제어하는 마우스](docs/flowcharts/gaze.png)
 
-프로젝트 문서와 코드를 바탕으로 재구성한 개략도입니다. 결과와 검증의 한계는 아래에 설명합니다. [SVG](docs/flowcharts/gaze.svg)
+프로젝트 문서와 코드를 바탕으로 재구성한 개략도입니다. 아래 결과 설명을 함께 읽으면 확인된 내용과 검증의 한계를 살펴볼 수 있습니다. [SVG](docs/flowcharts/gaze.svg)
 
 ### 프로젝트 구성과 팀 역할
 
@@ -43,9 +43,9 @@
 
 ### 데이터와 모델
 
-참가자가 화면 좌표를 알고 있는 목표를 바라보는 동안 눈 이미지를 수집했습니다. 이미지 경로와 좌표를 학습용으로 저장하고, 학습한 시선 추정 모델을 실시간 인터페이스에 연결했습니다. 모델은 FGI-Net 논문을 참고했으며, 프로젝트 보고서에 설명한 수정 사항을 반영했습니다. 발표된 구조를 정확히 재현했다고 주장하지 않습니다.
+참가자가 화면 좌표를 알고 있는 목표를 바라보는 동안 눈 이미지를 수집했습니다. 이미지 경로와 좌표를 학습용으로 저장하고, 학습한 시선 추정 모델을 실시간 인터페이스에 연결했습니다. 모델은 FGI-Net 논문을 참고했으며, 프로젝트 보고서에 설명한 수정 사항을 반영했습니다. 모델을 읽을 때는 이 수정 사항을 함께 참고하면 됩니다. 발표된 구조의 정확한 재현을 주장하는 구현은 아닙니다.
 
-주의할 점 하나는 일반적인 이미지 증강 기법이 시선 추정에도 그대로 유효한 것은 아니라는 점입니다. 눈 이미지를 뒤집거나 회전하면 방향 라벨의 의미가 달라질 수 있습니다. 또 다른 점은 좌표 오차가 작다는 것만으로 편안하게 사용할 수 있는 마우스 인터페이스가 되지는 않는다는 것입니다. 보정, 평활화, 클릭 동작이 함께 제대로 작동해야 합니다.
+데이터를 준비할 때는 이미지 변형이 시선 라벨에 미치는 영향을 함께 살펴봐야 합니다. 일반적인 이미지 증강 기법을 그대로 적용하면, 눈 이미지를 뒤집거나 회전하는 과정에서 방향 라벨의 의미가 달라질 수 있습니다. 사용감을 평가할 때도 좌표 오차와 함께 보정, 평활화, 클릭 동작이 잘 맞물리는지 확인해야 합니다. 좌표 오차가 작더라도 이 동작들이 함께 작동해야 편안한 마우스 인터페이스가 됩니다.
 
 ### 결과
 
@@ -53,13 +53,13 @@ MAE는 화면 좌표의 평균 절대 오차이며 단위는 픽셀입니다. FP
 
 ### 구현 살펴보기
 
-먼저 [main.py](main.py)에서 실시간 프레임 처리 루프와 포인터 조작을 살펴보세요. 다음으로 [gaze_utils.py](gaze_utils.py)에서 보정과 전처리 단계를, [fginet.py](fginet.py)에서 신경망을 확인하면 됩니다. 이 순서로 읽으면 모델 내부 구조를 살펴보기 전에 인터페이스가 모델에 요구하는 역할을 이해할 수 있습니다.
+구현을 처음 살펴본다면 [main.py](main.py)의 실시간 프레임 처리 루프와 포인터 조작부터 읽는 것이 도움이 됩니다. 이어서 [gaze_utils.py](gaze_utils.py)의 보정과 전처리 단계, [fginet.py](fginet.py)의 신경망을 살펴볼 수 있습니다. 이 순서로 읽으면 모델 내부 구조를 살펴보기 전에 인터페이스가 모델에 요구하는 역할을 이해할 수 있습니다.
 
-프로젝트 내용을 살펴보는 데는 웹캠이 필요하지 않습니다. 실시간 시연을 재현하려면 먼저 호환되는 실행 환경과 모델 체크포인트를 준비하고, 사용자와 화면에 맞춰 보정해야 합니다. 저장소를 열거나 명시된 환경을 설치하는 것만으로 학습된 모델이나 유효한 보정값이 제공되지는 않습니다.
+프로젝트 내용을 살펴보는 데는 웹캠이 필요하지 않습니다. 실시간 시연을 재현하려면 먼저 호환되는 실행 환경과 모델 체크포인트를 준비하고, 사용자와 화면에 맞춰 보정해야 합니다. 학습된 모델과 유효한 보정값은 저장소나 환경 설치만으로 제공되지 않으므로, 실행 전에 별도로 준비해야 합니다.
 
 ### 실행
 
-기록된 실행 환경은 [environment.yml](environment.yml)에 있습니다. 실시간 프로그램에는 호환되는 모델 가중치, 웹캠, 사용자 보정이 필요합니다. 또한 이 프로그램은 마우스 포인터를 제어합니다. 가중치와 개인 보정 데이터는 여기에서 제공하지 않으므로, 저장소를 복제한 직후 전체 시연을 실행할 수는 없습니다.
+기록된 실행 환경은 [environment.yml](environment.yml)에 있습니다. 실시간 프로그램에는 호환되는 모델 가중치, 웹캠, 사용자 보정이 필요합니다. 또한 이 프로그램은 마우스 포인터를 제어합니다. 가중치와 개인 보정 데이터는 여기에서 제공하지 않습니다. 저장소를 복제한 뒤 전체 시연을 실행하려면 이 자료를 별도로 준비하는 과정이 필요합니다.
 
 카메라를 열거나 포인터를 제어하지 않고 Python 소스의 구문을 검사했습니다. 원래 보고서와 소스 이력에는 공동 저작 이력이 유지되어 있습니다.
 
@@ -92,7 +92,7 @@ This could serve as a starting point for hands-free pointer interaction and acce
 
 ![Gaze-controlled mouse](docs/flowcharts/gaze.png)
 
-Overview reconstructed from the documented project and code. Results and verification limits are described below. [SVG](docs/flowcharts/gaze.svg)
+Overview reconstructed from the documented project and code. The results below explain what was checked and where the verification limits remain. [SVG](docs/flowcharts/gaze.svg)
 
 ### Project configuration and team
 
@@ -110,9 +110,9 @@ Calibration is a separate step from training. Looking at several known screen ta
 
 ### Data and model
 
-Eye images were collected while participants looked at targets with known screen coordinates. Image paths and coordinates were stored for training, and the trained gaze model was connected to the live interface. The model was informed by an FGI-Net paper, with modifications described in the project report; it is not claimed as an exact reproduction of the published architecture.
+Eye images were collected while participants looked at targets with known screen coordinates. Image paths and coordinates were stored for training, and the trained gaze model was connected to the live interface. The model was informed by an FGI-Net paper, with modifications described in the project report; it should be read as an adapted implementation rather than an exact reproduction of the published architecture.
 
-One complication is that ordinary image augmentation is not automatically valid for gaze estimation. Flipping or rotating an eye image can change the meaning of its direction label. Another is that a low coordinate error alone does not make a comfortable mouse interface: calibration, smoothing and click behaviour must also work together.
+When preparing gaze data, it helps to consider how image transformations affect the labels. Ordinary image augmentation is not automatically valid here: flipping or rotating an eye image can change the meaning of its direction label. For a comfortable mouse interface, low coordinate error also needs to be paired with calibration, smoothing and click behaviour that work well together.
 
 ### Results
 
@@ -120,13 +120,13 @@ MAE is the mean absolute error in screen-coordinate pixels; FPS is the number of
 
 ### Reading the implementation
 
-Start with [main.py](main.py) to follow the live frame loop and pointer interaction. Next, read [gaze_utils.py](gaze_utils.py) for the calibration and preprocessing steps, then [fginet.py](fginet.py) for the network. This order shows what the interface needs from the model before going into the model's internal structure.
+If you are new to the implementation, [main.py](main.py) is a useful starting point for the live frame loop and pointer interaction. From there, [gaze_utils.py](gaze_utils.py) explains the calibration and preprocessing steps, and [fginet.py](fginet.py) defines the network. This order shows what the interface needs from the model before going into the model's internal structure.
 
-To inspect the project, no webcam is needed. To reproduce the live demo, first prepare a compatible environment and model checkpoint, then calibrate for the user and screen. Merely opening the repository or installing the listed environment does not supply a trained model or a valid calibration.
+You can explore the project without a webcam. To reproduce the live demo, first prepare a compatible environment and model checkpoint, then calibrate for the user and screen. The trained model and a valid calibration need separate preparation; opening the repository or installing the listed environment does not provide them.
 
 ### Running
 
-The recorded environment is in [environment.yml](environment.yml). The live program needs compatible model weights, a webcam and user calibration. It also controls the mouse pointer. The weights and personal calibration data are not supplied here, so the repository cannot run the full demo immediately after cloning.
+The recorded environment is in [environment.yml](environment.yml). The live program needs compatible model weights, a webcam and user calibration. It also controls the mouse pointer. The weights and personal calibration data are not supplied here. After cloning, you will need to prepare these before running the full demo.
 
 The Python source was checked for syntax without opening the camera or controlling the pointer. The original report and source history retain the joint authorship.
 
